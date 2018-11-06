@@ -1,0 +1,19 @@
+// ==========================================================================
+// Extends or Placeholders
+// ==========================================================================
+
+// General Placeholders
+
+%centered {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100%;
+  max-width: $max-width;
+  flex-grow: inherit;
+}
+
+%transition {
+  transition: all .2s ease-in-out;  
+}
+
+// UI Element Specific Placeholders

@@ -1,0 +1,31 @@
+// ==========================================================================
+// Base Styles
+// ==========================================================================
+
+* {
+  font-family: $font-family--primary;
+  font-size: $base__font-size;
+  line-height: $base__line;
+}
+
+body {
+  justify-content: space-evenly;
+  flex-direction: column;
+  display: flex;
+  height: 100vh;
+}
+
+li, ol, ul {
+  padding: 0;
+  display: inline-block;
+}
+
+.container {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 1.5em;
+}
+
+.centered {
+  @extend %centered;
+}
