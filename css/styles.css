@@ -55,6 +55,14 @@ button {
   transition: var(--transition);
 }
 
+button:active {
+  background-color: var(--color-neutral);
+}
+
+button:focus {
+  outline: none;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
