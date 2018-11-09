@@ -9,9 +9,12 @@ const phrase = ['I am a meat-popsicle.',
                 'There is no spoon.',
                 'Why so serious?',
                 'Witness me!']
-const missed = 0;
+let missed = 0;
 const startGame = document.getElementsByClassName('btn__reset');
 const phraseBanner = document.querySelectorAll('ul');
+const keyboardButton = document.querySelectorAll('button');
+let currentLetter = '';
+let checkLetter = 0;
 
 // FUNCTIONS
 
@@ -31,13 +34,41 @@ const chosenPhrase = getRandomPhraseArray(phrase);
 const characterArray = [...chosenPhrase];
 
 function characterInserter() {
-  for (let i = 0 ; i <= characterArray.length ; i++) {
+  for (let i = 0 ; i < characterArray.length ; i++) {
     const newLi = document.createElement('li');
-    newLi.className = 'letter';
     const currentCharacter = characterArray[i];
+    if (/\W/.test(currentCharacter)) {
+      newLi.className = 'non-letter';
+    } else {
+      newLi.className = 'letter'
+    }
     newLi.textContent = currentCharacter;
     phraseBanner[0].appendChild(newLi);
   }
 };
 
-characterInserter()
+characterInserter();
+
+
+for (let i = 0 ; i < keyboardButton.length ; i++) {
+  keyboardButton[i].addEventListener('click', () => {
+    const pressedButton = keyboardButton[i];
+    pressedButton.className = 'chosen';
+    function checkLetter(chosenButton) {
+      const phraseLetters = document.getElementsByClassName('letter');
+      for (let i = 0 ; i < phraseLetters.length ; i++) {
+        const currentPhraseLetter = phraseLetters[i].textContent;
+        const currentButtonLetter = chosenButton.textContent;
+        if (currentPhraseLetter === currentButtonLetter) {
+          checkLetter += 1;
+        }
+      };
+    };
+    checkLetter(pressedButton);
+    if (checkLetter > 0) {
+      console.log('no match');
+      missed += 1;
+      console.log(missed);
+    }
+  })
+};
