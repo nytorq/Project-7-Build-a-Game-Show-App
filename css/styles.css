@@ -11,8 +11,8 @@
   --color-neutral-light: #D2D2D2;
   --color-keys: #37474F;
   --color-keys-light: #E5E5E5;
-  --font-size-large: 60px;
-  --font-size-medium: 20px;
+  --font-size-large: 3em;
+  --font-size-medium: 1em;
   --transition: all .2s ease-in-out;
 }
 
@@ -27,6 +27,7 @@ body {
   flex-direction: column;
   display: flex;
   height: 100vh;
+  background: #272727;
 }
 
 li, ol, ul {
@@ -87,6 +88,7 @@ button:focus {
 
 .letter {
   font-size: var(--font-size-medium);
+  font-size: var(--font-size-large);
   height: 65px;
   width: 65px;
   padding: 20px 1px 0 1px;
@@ -94,6 +96,8 @@ button:focus {
   color: transparent;
   background: var(--color-neutral-light);
   border-radius: 5px;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
 }
 
 .non-letter {
@@ -102,9 +106,10 @@ button:focus {
   width: 65px;
   padding: 20px 1px 0 1px;
   margin-right: 2px;
-  border: 3px solid var(--color-neutral);
-  background: var(--color-keys-light);
+  /* border: 3px solid var(--color-neutral);
+  background: var(--color-keys-light); */
   border-radius: 5px;
+  color: transparent;
 }
 
 
@@ -114,8 +119,18 @@ button:focus {
 }
 
 .show {
-  color: #000;
-  background-color: #76CE82;
+  /* color: #000; */
+  color: #fff;
+  /* background-color: #76CE82; */
+  /* font-size: var(--font-size-medium); */
+  font-size: var(--font-size-large);
+  height: 65px;
+  width: 65px;
+  padding: 20px 1px 0 1px;
+  margin-right: 2px;
+  border-radius: 5px;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
 }
 
 /* Keyboard */

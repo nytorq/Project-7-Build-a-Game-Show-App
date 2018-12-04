@@ -3,6 +3,7 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = ['I am a meat-popsicle.',
                 'Apes together strong',
+                'Groot',
                 'I am Groot.',
                 'I see dead people.',
                 'I am one with the Force, the Force is with me.',
@@ -18,9 +19,9 @@ const tries = document.getElementsByClassName('tries');
 const overlay = document.getElementById('overlay');
 let parsedLetterNumber = '';
 let parsedShownLetterNumber = '';
-let currentLetter = '';
 let heartsLost = 0;
-let letterFound = '';
+let letterFound;
+let phraseArray = '';
 
 // FUNCTIONS
 
@@ -28,7 +29,7 @@ function getRandomPhraseArray(array) {
   // const min = 0;
   // const max = phrase.length;
   // return array[Math.floor(Math.random() * (max - min)) + min];
-  return array[2];
+  return array[2]; // This is for testing purposes. Allows you to specify which phrase you want.
 };
 
 startGame[0].addEventListener('click', () => {
@@ -60,34 +61,37 @@ addPhraseToDisplay();
 
 for (let i = 0 ; i < keyboardButton.length ; i++) {
   keyboardButton[i].addEventListener('click', () => {
-    const pressedButton = keyboardButton[i];
-    pressedButton.className = 'chosen';
+    const guess = keyboardButton[i];
+    guess.className = 'chosen';
+    phraseArray = document.getElementsByClassName('letter');
     function checkLetter(chosenButton) {
-      const phraseLetters = document.getElementsByClassName('letter');
-      for (let i = 0 ; i < phraseLetters.length ; i++) {
-        const currentPhraseLetter = phraseLetters[i].textContent;
-        const smallCurrentPhraseLetter = currentPhraseLetter.toLowerCase();
-        const currentButtonLetter = chosenButton.textContent;
-        if (smallCurrentPhraseLetter === currentButtonLetter) {
-          phraseLetters[i].className = 'show';
-          letterFound = currentButtonLetter;
-          const shownLetters = document.getElementsByClassName('show');
-          parsedShownLetterNumber = shownLetters.length
+      for (let i = 0 ; i < phraseArray.length ; i++) {
+        const currentLetter = phraseArray[i].textContent.toLowerCase();
+        const guessLetter = chosenButton.textContent;
+        if (currentLetter === guessLetter) {
+          phraseArray[i].className = 'show';
+          letterFound = guessLetter;
+          console.log('MATCH! Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
         } else {
-            letterFound = null
-          }
+          console.log('Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
+          return null;
+        }
+
       };
+      return letterFound;
     };
-    checkLetter(pressedButton);
-    if (letterFound === null) {
-      tries[missed].style.display = 'none';
+    checkLetter(guess);
+    if (letterFound == null) {
+      tries[missed].style.opacity = 0.1;
       missed += 1;
     }
     function checkWin() {
+      let title = document.getElementsByClassName('title');
+      const shownLetters = document.getElementsByClassName('show');
+      parsedShownLetterNumber = shownLetters.length
       if (missed === 5) {
         overlay.style.display = 'inherit';
         overlay.className = 'lose';
-        let title = document.getElementsByClassName('title');
         title[0].innerText = 'You have lost the game.';
       } else if (parsedLetterNumber === parsedShownLetterNumber) {
         overlay.style.display = 'inherit';
