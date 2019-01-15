@@ -21,7 +21,10 @@ let parsedLetterNumber = '';
 let parsedShownLetterNumber = '';
 let heartsLost = 0;
 let letterFound;
-let phraseArray = '';
+let phraseArray = document.getElementsByClassName('letter');
+let phraseLetters = [];
+let arrayIndex;
+let guessLetter;
 
 // FUNCTIONS
 
@@ -55,35 +58,42 @@ function addPhraseToDisplay() {
     parsedLetterNumber = letterArray.length;
   }
 }
-
 addPhraseToDisplay();
 
+function pushLetters(phrase) {
+  for (let i = 0 ; i < phrase.length ; i++) {
+    let whatLetter = phrase[i].textContent.toLowerCase();
+    phraseLetters.push(whatLetter);
+  };
+};
+pushLetters(phraseArray);
 
 for (let i = 0 ; i < keyboardButton.length ; i++) {
   keyboardButton[i].addEventListener('click', () => {
     const guess = keyboardButton[i];
     guess.className = 'chosen';
-    phraseArray = document.getElementsByClassName('letter');
     function checkLetter(chosenButton) {
-      for (let i = 0 ; i < phraseArray.length ; i++) {
-        const currentLetter = phraseArray[i].textContent.toLowerCase();
-        const guessLetter = chosenButton.textContent;
-        if (currentLetter === guessLetter) {
-          phraseArray[i].className = 'show';
-          letterFound = guessLetter;
-          console.log('MATCH! Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
+      guessLetter = chosenButton.textContent;
+      if (phraseLetters.includes(guessLetter)) {
+        letterFound = guessLetter;
         } else {
-          console.log('Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
-          return null;
-        }
-
-      };
-      return letterFound;
+          letterFound = null;
+      }
     };
     checkLetter(guess);
-    if (letterFound == null) {
+
+    if (letterFound === null) {
       tries[missed].style.opacity = 0.1;
       missed += 1;
+    } else {
+      if (letterFound) {
+        for (let i = 0 ; i < phraseArray.length ; i++) {
+          const currentLetter = phraseArray[i].textContent.toLowerCase();
+          if (currentLetter === guessLetter) {
+              phraseArray[i].className = 'show';
+          };
+        }
+      }
     }
     function checkWin() {
       let title = document.getElementsByClassName('title');
@@ -101,5 +111,57 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
     }
     checkWin();
   });
-
 };
+
+
+// OLD VERSIONS OF CHECKLETTER FUNCTION:
+// version 1:
+// for (let i = 0 ; i < phraseArray.length ; i++) {
+//   const currentLetter = phraseArray[i].textContent.toLowerCase();
+//   const guessLetter = chosenButton.textContent;
+//   if (currentLetter === guessLetter) {
+//     phraseArray[i].className = 'show';
+//     letterFound = guessLetter;
+//     console.log('MATCH! Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
+//   } else {
+//     console.log('Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
+//     return null;
+//   }
+// };
+// return letterFound;
+// ------------------------------
+// version 2:
+//   const guessLetter = chosenButton.textContent;
+//   for (let i = 0 ; i < phraseArray.length ; i++) {
+//     const currentLetter = phraseArray[i].textContent.toLowerCase();
+//     if (currentLetter.includes(guessLetter)) {
+//       letterFound = true;
+//     } else {
+//       console.log('guessLetter equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
+//       return null;
+//     }
+//   }
+  // if (letterFound) {
+  //   for (let i = 0 ; i < phraseArray.length ; i++) {
+  //     const currentLetter = phraseArray[i].textContent.toLowerCase();
+  //     if (currentLetter === guessLetter) {
+  //         phraseArray[i].className = 'show';
+  //         letterFound = guessLetter;
+  //     };
+  //   }
+  // }
+// console.log('guessLetter equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '.');
+// -----------------------------------
+// v3
+//
+// function checkLetter(chosenButton) {
+//   const guessLetter = chosenButton.textContent;
+//   if (phraseLetters.includes(guessLetter)) {
+//     arrayIndex = phraseLetters.indexOf(guessLetter);
+//     console.log("Found a match in position " + arrayIndex + " of phraseLetters array.")
+//     phraseArray[arrayIndex].className = 'show';
+//   } else {
+//     return null
+//   }
+// };
+// checkLetter(guess);
