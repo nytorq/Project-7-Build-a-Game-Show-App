@@ -17,14 +17,15 @@ const phraseBanner = document.querySelectorAll('ul');
 const keyboardButton = document.querySelectorAll('button');
 const tries = document.getElementsByClassName('tries');
 const overlay = document.getElementById('overlay');
-let parsedLetterNumber = '';
-let parsedShownLetterNumber = '';
+let parsedLetterNumber;
+let parsedShownLetterNumber;
 let heartsLost = 0;
 let letterFound;
 let phraseArray = document.getElementsByClassName('letter');
 let phraseLetters = [];
 let arrayIndex;
 let guessLetter;
+let index;
 
 // FUNCTIONS
 
@@ -81,24 +82,36 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
       }
     };
     checkLetter(guess);
-
     if (letterFound === null) {
       tries[missed].style.opacity = 0.1;
       missed += 1;
     } else {
       if (letterFound) {
-        for (let i = 0 ; i < phraseArray.length ; i++) {
-          const currentLetter = phraseArray[i].textContent.toLowerCase();
-          if (currentLetter === guessLetter) {
-              phraseArray[i].className = 'show';
-          };
-        }
+        // for (let i = 0 ; i < phraseArray.length ; i++) {
+        //   const currentLetter = phraseArray[i].textContent.toLowerCase();
+        //   console.log('i is set to ' + i + '.');
+        //   console.log('Keyboard input equals ' + guessLetter + '. CurrentLetter is ' + currentLetter + '. And, letterFound is set to ' + letterFound + '. phraseArray is '+ phraseArray.length + '.');
+        //   if (currentLetter === guessLetter) {
+        //       phraseArray[i].className = 'show';
+        //   };
+        // }
+        do {
+          index = phraseLetters.indexOf(letterFound);
+          if (index === -1){
+            return;
+          } else {
+              phraseArray[index].className = 'show';
+          }
+          phraseLetters.splice(index, 1);
+          // console.log("phraseLetters is: " + phraseLetters + " and has a length of: " + phraseLetters.length+ ".")
+        } while (index >= 0)
       }
     }
     function checkWin() {
       let title = document.getElementsByClassName('title');
       const shownLetters = document.getElementsByClassName('show');
-      parsedShownLetterNumber = shownLetters.length
+      parsedShownLetterNumber = shownLetters.length;
+      console.log("Shown letters is equal to : " + parsedShownLetterNumber);
       if (missed === 5) {
         overlay.style.display = 'inherit';
         overlay.className = 'lose';
