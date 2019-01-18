@@ -30,10 +30,10 @@ let index;
 // FUNCTIONS
 
 function getRandomPhraseArray(array) {
-  // const min = 0;
-  // const max = phrase.length;
-  // return array[Math.floor(Math.random() * (max - min)) + min];
-  return array[2]; // This is for testing purposes. Allows you to specify which phrase you want.
+  const min = 0;
+  const max = phrase.length;
+  return array[Math.floor(Math.random() * (max - min)) + min];
+  //return array[2];  This is for testing purposes. Allows you to specify which phrase you want.
 };
 
 startGame[0].addEventListener('click', () => {
@@ -99,10 +99,12 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
           index = phraseLetters.indexOf(letterFound);
           if (index === -1){
             return;
+            // console.log('return!');
           } else {
               phraseArray[index].className = 'show';
           }
           phraseLetters.splice(index, 1);
+          checkWin();
           // console.log("phraseLetters is: " + phraseLetters + " and has a length of: " + phraseLetters.length+ ".")
         } while (index >= 0)
       }
@@ -122,7 +124,7 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
         title[0].innerText = 'You have won the game!';
       }
     }
-    checkWin();
+
   });
 };
 
