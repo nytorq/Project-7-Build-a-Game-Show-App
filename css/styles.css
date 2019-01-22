@@ -131,6 +131,9 @@ button:focus {
   border-radius: 5px;
   margin-top: 0.25em;
   margin-bottom: 0.25em;
+  /* transition-delay: 0.5s; */
+  transition-duration: 0.5s;
+  transition-property: all;
 }
 
 /* Keyboard */
