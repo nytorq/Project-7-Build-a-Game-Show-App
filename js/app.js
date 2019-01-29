@@ -27,16 +27,58 @@ let index;
 // FUNCTIONS
 
 function getRandomPhraseArray(array) {
-  // const min = 0;
-  // const max = phrase.length;
-  // return array[Math.floor(Math.random() * (max - min)) + min];
-  return array[2];
+  const min = 0;
+  const max = phrase.length;
+  return array[Math.floor(Math.random() * (max - min)) + min];
+  // return array[2];
 }
 
-startGame[0].addEventListener('click', () => {
-  overlay.style.display = 'none';
-});
+// function removeOverlay() {
+//   startGame[0].addEventListener('click', () => {
+//     overlay.style.display = 'none';
+//   });
+// }
+// removeOverlay()
 
+function resetGame() {
+  startGame[0].addEventListener('click', () => {
+    overlay.style.display = 'none';
+    missed = 0;
+    // console.log('Hello, from newGame button, and the missed variable equals ' + missed + '.');
+    for (i=0 ; i < keyboardButton.length ; i++) {
+      keyboardButton[i].className='';
+    };
+    for (i=0; i < tries.length ; i++) {
+      tries[i].style.opacity = 1;
+    }
+    // for (i=0 ; i < phraseBanner.length ; i++) {
+    //   phraseBanner[i].removeElement();
+    // };
+    // const oldLetters = document.getElementsByClassName('show');
+    // const oldNonLetters = document.getElementsByClassName('non-letter');
+    // for (i=0 ; i < oldLetters.length ; i++) {
+    //   console.log(oldLetters);
+    //   console.log("Removing letter in index " + i + " in oldLetters array.")
+    //   phraseBanner[0].removeChild(oldLetters[i]);
+    // };
+    // do {
+    //   console.log('Removing letter ' + oldLetters[0].textContent+ '.');
+    //   phraseBanner[0].removeChild(oldLetters[0]);
+    // } while (oldLetters[0])
+    // do {
+    //   phraseBanner[0].removeChild(oldNonLetters[0]);
+    // } while (oldNonLetters[0])
+    // const ul = getElementsByTagName('ul')
+    // phraseBanner.removeChild(oldLetters[0]);
+    let li = document.getElementById('phraseBanner').querySelectorAll('*');
+    for (i=0 ; i < li.length ; i++) {
+      li[i].remove();
+    };
+    addPhraseToDisplay();
+    pushLetters(phraseArray);
+  });
+}
+resetGame();
 
 // const chosenPhrase = getRandomPhraseArray(phrase);
 // const characterArray = [...chosenPhrase];
@@ -84,6 +126,8 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
     if (letterFound === null) {
       tries[missed].style.opacity = 0.1;
       missed += 1;
+      console.log('missed equals ' + missed + ".")
+      checkWin();
     } else {
       if (letterFound) {
         do {
@@ -102,7 +146,7 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
       let title = document.getElementsByClassName('title');
       const shownLetters = document.getElementsByClassName('show');
       parsedShownLetterNumber = shownLetters.length;
-      console.log("Shown letters is equal to : " + parsedShownLetterNumber);
+      // console.log("Shown letters is equal to : " + parsedShownLetterNumber);
       if (missed === 5) {
         overlay.style.display = 'inherit';
         overlay.className = 'lose';
@@ -115,43 +159,6 @@ for (let i = 0 ; i < keyboardButton.length ; i++) {
         resetGame();
       }
 
-    }
-    function resetGame() {
-      let newGame = document.createElement('button');
-      newGame.innerHTML = 'New Game';
-      newGame.className = 'btn__reset';
-      newGame.addEventListener('click', () => {
-        overlay.style.display = 'none';
-        missed = 0;
-        console.log('Hello, from newGame button, and the missed variable equals ' + missed + '.');
-        for (i=0 ; i < keyboardButton.length ; i++) {
-          keyboardButton[i].className='';
-        };
-        for (i=0; i < tries.length ; i++) {
-          tries[0].style.opacity = 1;
-        }
-        // for (i=0 ; i < phraseBanner.length ; i++) {
-        //   phraseBanner[i].removeElement();
-        // };
-        const oldLetters = document.getElementsByClassName('show');
-        const oldNonLetters = document.getElementsByClassName('non-letter');
-        // for (i=0 ; i < oldLetters.length ; i++) {
-        //   console.log(oldLetters);
-        //   console.log("Removing letter in index " + i + " in oldLetters array.")
-        //   phraseBanner[0].removeChild(oldLetters[i]);
-        // };
-        do {
-          phraseBanner[0].removeChild(oldLetters[0]);
-        } while (oldLetters[0])
-        do {
-          phraseBanner[0].removeChild(oldNonLetters[0]);
-        } while (oldNonLetters[0])
-        // const ul = getElementsByTagName('ul')
-        // phraseBanner.removeChild(oldLetters[0]);
-        addPhraseToDisplay();
-        pushLetters(phraseArray);
-      });
-      overlay.appendChild(newGame);
     }
   });
 }
