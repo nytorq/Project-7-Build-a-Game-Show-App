@@ -1,164 +1,81 @@
 /*jshint esversion: 6 */
 
 // VARIABLES
-const phrase = ['I am a meat-popsicle.',
-                'Apes together strong',
-                'Groot',
-                'I am Groot.',
-                'I see dead people.',
-                'I am one with the Force, the Force is with me.',
-                'There is no spoon.',
-                'Why so serious?',
-                'Witness me!'];
+
+const qwerty = document.getElementById('qwerty');
+const phrase = document.getElementById('phrase');
 let missed = 0;
 const startGame = document.getElementsByClassName('btn__reset');
-const phraseBanner = document.querySelectorAll('ul');
-const keyboardButton = document.querySelectorAll('button');
-const tries = document.getElementsByClassName('tries');
-const overlay = document.getElementById('overlay');
-let parsedLetterNumber;
-let parsedShownLetterNumber;
-let letterFound;
-let phraseArray = document.getElementsByClassName('letter');
-let phraseLetters = [];
-let guessLetter;
-let index;
+const phrases = ['Bob', 'Richard', 'Bill'];
+const phraseArray = getRandomPhraseArray(phrases);
+
+// EVENT LISTENERS
+
+startGame[0].addEventListener('click', () => {
+  console.log('The Start Game button has been clicked.');
+  const overlay = document.getElementById('overlay');
+  overlay.style.display = 'none';
+  console.log('The chosen phrase is: ' + phraseArray);
+  addPhraseToDisplay();
+});
+
+// REVIEW CHECKLETTER FUNCTION IN TT. YOU MAY HAVE GOT SOMETHING WRONG THERE.
+
+function checkLetter(parameter) {
+  if (phraseArray.includes(parameter) || phraseArray.includes(parameter.toUpperCase())) {
+    console.log("Found a match with the letter '" + parameter + "'.");
+    let letters = document.getElementsByClassName('letter');
+    do {
+      for (let i = 0 ; i < letters.length ; i++) {
+        console.log('The for loop has run ' + i + ' times');
+        if (letters[i].textContent.toLowerCase() === parameter) {
+          letters[i].className = 'show';
+          let condition = true;
+        } else {
+          // console.log('condition is set to ' + condition + '.');
+          condition = false;
+        }
+      }
+    } while (condition);
+  } else {
+    console.log("Did not find a match with the letter '" + parameter + "'.");
+    return null;
+  }
+}
+
+qwerty.addEventListener('click', ()=> {
+  let target = event.target;
+  if (target.nodeName.toLowerCase() === 'button') {
+    console.log("The game's keyboard button letter '" + target.textContent + "' was clicked.");
+    target.className = 'chosen';
+    target.setAttribute('type', 'disabled');
+    let letterFound =  target.textContent;
+    checkLetter(letterFound);
+  }
+  // console.log("The game's keyboard has been clicked. The letter was '" + target.textContent + "' was clicked.");
+});
 
 // FUNCTIONS
 
 function getRandomPhraseArray(array) {
   const min = 0;
-  const max = phrase.length;
-  return array[Math.floor(Math.random() * (max - min)) + min];
-  // return array[2];
+  const max = array.length;
+  let randNumber = Math.floor(Math.random() * (max - min)) + min;
+  return (array[randNumber].split(''));
+  // return array[3]; This allows you to chose a specific item in the phraseArray
 }
-
-// function removeOverlay() {
-//   startGame[0].addEventListener('click', () => {
-//     overlay.style.display = 'none';
-//   });
-// }
-// removeOverlay()
-
-function resetGame() {
-  startGame[0].addEventListener('click', () => {
-    overlay.style.display = 'none';
-    missed = 0;
-    // console.log('Hello, from newGame button, and the missed variable equals ' + missed + '.');
-    for (i=0 ; i < keyboardButton.length ; i++) {
-      keyboardButton[i].className='';
-    };
-    for (i=0; i < tries.length ; i++) {
-      tries[i].style.opacity = 1;
-    }
-    // for (i=0 ; i < phraseBanner.length ; i++) {
-    //   phraseBanner[i].removeElement();
-    // };
-    // const oldLetters = document.getElementsByClassName('show');
-    // const oldNonLetters = document.getElementsByClassName('non-letter');
-    // for (i=0 ; i < oldLetters.length ; i++) {
-    //   console.log(oldLetters);
-    //   console.log("Removing letter in index " + i + " in oldLetters array.")
-    //   phraseBanner[0].removeChild(oldLetters[i]);
-    // };
-    // do {
-    //   console.log('Removing letter ' + oldLetters[0].textContent+ '.');
-    //   phraseBanner[0].removeChild(oldLetters[0]);
-    // } while (oldLetters[0])
-    // do {
-    //   phraseBanner[0].removeChild(oldNonLetters[0]);
-    // } while (oldNonLetters[0])
-    // const ul = getElementsByTagName('ul')
-    // phraseBanner.removeChild(oldLetters[0]);
-    let li = document.getElementById('phraseBanner').querySelectorAll('*');
-    for (i=0 ; i < li.length ; i++) {
-      li[i].remove();
-    };
-    addPhraseToDisplay();
-    pushLetters(phraseArray);
-  });
-}
-resetGame();
-
-// const chosenPhrase = getRandomPhraseArray(phrase);
-// const characterArray = [...chosenPhrase];
 
 function addPhraseToDisplay() {
-  const chosenPhrase = getRandomPhraseArray(phrase);
-  const characterArray = [...chosenPhrase];
-  for (let i = 0 ; i < characterArray.length ; i++) {
-    const newLi = document.createElement('li');
-    const currentCharacter = characterArray[i];
-    if (/\W/.test(currentCharacter)) {
-      newLi.className = 'non-letter';
+  const phraseBanner = document.getElementById('phraseBanner');
+  for (let i = 0 ; i < phraseArray.length ; i++) {
+    // console.log('The addPhraseToDisplay for loop is working and "i" is currently set to ' + i + '.');
+    let newListItem = document.createElement('li');
+    newListItem.textContent = phraseArray[i];
+    if (/\W/.test(newListItem.textContent)) {
+      newListItem.className = 'non-letter';
     } else {
-      newLi.className = 'letter';
+      newListItem.className = 'letter';
     }
-    newLi.textContent = currentCharacter;
-    phraseBanner[0].appendChild(newLi);
-    const letterArray = document.getElementsByClassName('letter');
-    parsedLetterNumber = letterArray.length;
+    phraseBanner.appendChild(newListItem);
   }
-}
-addPhraseToDisplay();
-
-function pushLetters(phrase) {
-  for (let i = 0 ; i < phrase.length ; i++) {
-    let whatLetter = phrase[i].textContent.toLowerCase();
-    phraseLetters.push(whatLetter);
-  }
-}
-pushLetters(phraseArray);
-
-for (let i = 0 ; i < keyboardButton.length ; i++) {
-  keyboardButton[i].addEventListener('click', () => {
-    const guess = keyboardButton[i];
-    guess.className = 'chosen';
-    function checkLetter(chosenButton) {
-      guessLetter = chosenButton.textContent;
-      if (phraseLetters.includes(guessLetter)) {
-        letterFound = guessLetter;
-        } else {
-          letterFound = null;
-      }
-    }
-    checkLetter(guess);
-    if (letterFound === null) {
-      tries[missed].style.opacity = 0.1;
-      missed += 1;
-      console.log('missed equals ' + missed + ".")
-      checkWin();
-    } else {
-      if (letterFound) {
-        do {
-          index = phraseLetters.indexOf(letterFound);
-          if (index === -1){
-            return;
-          } else {
-              phraseArray[index].className = 'show';
-          }
-          phraseLetters.splice(index, 1);
-          checkWin();
-        } while (index >= 0);
-      }
-    }
-    function checkWin() {
-      let title = document.getElementsByClassName('title');
-      const shownLetters = document.getElementsByClassName('show');
-      parsedShownLetterNumber = shownLetters.length;
-      // console.log("Shown letters is equal to : " + parsedShownLetterNumber);
-      if (missed === 5) {
-        overlay.style.display = 'inherit';
-        overlay.className = 'lose';
-        title[0].innerText = 'You have lost the game.';
-        resetGame();
-      } else if (parsedLetterNumber === parsedShownLetterNumber) {
-        overlay.style.display = 'inherit';
-        overlay.className = 'win';
-        title[0].innerText = 'You have won the game!';
-        resetGame();
-      }
-
-    }
-  });
 }
