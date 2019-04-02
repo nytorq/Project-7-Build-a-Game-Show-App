@@ -121,6 +121,7 @@ button:focus {
 .show {
   /* color: #000; */
   color: #fff;
+  background-color: #272727;
   /* background-color: #76CE82; */
   /* font-size: var(--font-size-medium); */
   font-size: var(--font-size-large);
