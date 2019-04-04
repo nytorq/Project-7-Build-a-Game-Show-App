@@ -2,9 +2,10 @@
 
 // GLOBAL VARIABLES
 
+let missed = 0;
+let phraseArray;
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
-let missed = 0;
 const startGame = document.getElementsByClassName('btn__reset');
 const phrases = ['I am a meat-popsicle.',
                  'Apes together strong',
@@ -14,7 +15,6 @@ const phrases = ['I am a meat-popsicle.',
                  'There is no spoon.',
                  'Why so serious?',
                  'Witness me!'];
-let phraseArray;
 
 // FUNCTIONS
 
@@ -23,13 +23,11 @@ function getRandomPhraseArray(array) {
   const max = array.length;
   let randNumber = Math.floor(Math.random() * (max - min)) + min;
   return (array[randNumber].split(''));
-  // return array[3]; This allows you to chose a specific item in the phraseArray
 }
 
 function addPhraseToDisplay() {
   const phraseBanner = document.getElementById('phraseBanner');
   for (let i = 0 ; i < phraseArray.length ; i++) {
-    // console.log('The addPhraseToDisplay for loop is working and "i" is currently set to ' + i + '.');
     let newListItem = document.createElement('li');
     newListItem.textContent = phraseArray[i];
     if (/\W/.test(newListItem.textContent)) {
@@ -38,23 +36,19 @@ function addPhraseToDisplay() {
       newListItem.className = 'letter';
     }
     phraseBanner.appendChild(newListItem);
-    console.log('The chosen phrase is: ' + phraseArray);
   }
 }
 
 function checkLetter(parameter) {
   if (phraseArray.includes(parameter) || phraseArray.includes(parameter.toUpperCase())) {
-    console.log("Found a match with the letter '" + parameter + "'.");
     let letters = document.getElementsByClassName('letter');
     for (let i = 0 ; i < letters.length ; i++) {
       if (letters[i].textContent.toLowerCase() === parameter) {
         letters[i].classList.add('show');
         letterFound = letters[i].textContent.toLowerCase();
-        console.log('letterFound is equal to "' + letterFound + '".');
       }
     }
   } else {
-    console.log("Did not find a match with the letter '" + parameter + "'.");
     return null;
   }
 }
@@ -68,17 +62,15 @@ function checkWin() {
     overlay.className = 'win';
     title[0].innerText = 'You have won the game!';
   } else if (missed >= 5) {
-    console.log('missed has gone up to ' + missed + '.');
     overlay.style.display = 'inherit';
     overlay.className = 'lose';
     title[0].innerText = 'You have lost the game.';
   }
 }
 
-// EVENT LISTENER
+// EVENT LISTENERs
 
 startGame[0].addEventListener('click', () => {
-  console.log('The Start Game button has been clicked.');
   const overlay = document.getElementById('overlay');
   overlay.style.display = 'none';
   phraseArray = getRandomPhraseArray(phrases);
@@ -93,6 +85,7 @@ startGame[0].addEventListener('click', () => {
   }
   let chosen = document.getElementsByClassName('chosen');
   while (chosen[0]) {
+    chosen[0].removeAttribute("type");
     chosen[0].classList.remove('chosen');
   }
   addPhraseToDisplay();
@@ -101,7 +94,6 @@ startGame[0].addEventListener('click', () => {
 qwerty.addEventListener('click', ()=> {
   let target = event.target;
   if (target.nodeName.toLowerCase() === 'button') {
-    console.log("The game's keyboard button letter '" + target.textContent + "' was clicked.");
     target.className = 'chosen';
     target.setAttribute('type', 'disabled');
     let pressedLetter =  target.textContent;
@@ -113,5 +105,4 @@ qwerty.addEventListener('click', ()=> {
     }
     checkWin();
   }
-  // console.log("The game's keyboard has been clicked. The letter was '" + target.textContent + "' was clicked.");
 });
