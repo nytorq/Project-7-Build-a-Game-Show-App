@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-// VARIABLES
+// GLOBAL VARIABLES
 
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
@@ -14,7 +14,7 @@ const phrases = ['I am a meat-popsicle.',
                  'There is no spoon.',
                  'Why so serious?',
                  'Witness me!'];
-const phraseArray = getRandomPhraseArray(phrases);
+let phraseArray = getRandomPhraseArray(phrases);
 
 // FUNCTIONS
 
@@ -38,6 +38,7 @@ function addPhraseToDisplay() {
       newListItem.className = 'letter';
     }
     phraseBanner.appendChild(newListItem);
+    console.log('The chosen phrase is: ' + phraseArray);
   }
 }
 
@@ -56,30 +57,22 @@ function checkLetter(parameter) {
     console.log("Did not find a match with the letter '" + parameter + "'.");
     return null;
   }
-  checkWin();
 }
-//
-//
-// Working on the checkWin function. Have to make the game board convey that you won when '.shown' is equal to the count of '.letter'
-//
-//
+
 function checkWin() {
   let title = document.getElementsByClassName('title');
-  const shownLetters = document.getElementsByClassName('show');
-  parsedShownLetterNumber = shownLetters.length;
-  // console.log("Shown letters is equal to : " + parsedShownLetterNumber);
-  if (missed === 5) {
-    overlay.style.display = 'inherit';
-    overlay.className = 'lose';
-    title[0].innerText = 'You have lost the game.';
-    // resetGame();
-  } else if (parsedLetterNumber === parsedShownLetterNumber) {
+  let shown = document.getElementsByClassName('show');
+  let letters = document.getElementsByClassName('letter');
+  if (shown.length === letters.length) {
     overlay.style.display = 'inherit';
     overlay.className = 'win';
     title[0].innerText = 'You have won the game!';
-    // resetGame();
+  } else if (missed >= 5) {
+    console.log('missed has gone up to ' + missed + '.');
+    overlay.style.display = 'inherit';
+    overlay.className = 'lose';
+    title[0].innerText = 'You have lost the game.';
   }
-
 }
 
 // EVENT LISTENER
@@ -88,7 +81,19 @@ startGame[0].addEventListener('click', () => {
   console.log('The Start Game button has been clicked.');
   const overlay = document.getElementById('overlay');
   overlay.style.display = 'none';
-  console.log('The chosen phrase is: ' + phraseArray);
+  missed = 0;
+  let tries = document.getElementsByClassName('tries');
+  for (i=0; i < tries.length ; i++) {
+    tries[i].style.opacity = 1;
+  }
+  const phraseBanner = document.getElementById('phraseBanner');
+  while (phraseBanner.lastChild) {
+    phraseBanner.removeChild(phraseBanner.lastChild);
+  }
+  let chosen = document.getElementsByClassName('chosen');
+  while (chosen[0]) {
+    chosen[0].classList.remove('chosen');
+  }
   addPhraseToDisplay();
 });
 
@@ -100,10 +105,12 @@ qwerty.addEventListener('click', ()=> {
     target.setAttribute('type', 'disabled');
     let pressedLetter =  target.textContent;
     let letterFound = checkLetter(pressedLetter);
+    let tries = document.getElementsByClassName('tries');
     if (letterFound === null) {
       tries[missed].style.opacity = 0.1;
       missed += 1;
     }
+    checkWin();
   }
   // console.log("The game's keyboard has been clicked. The letter was '" + target.textContent + "' was clicked.");
 });
