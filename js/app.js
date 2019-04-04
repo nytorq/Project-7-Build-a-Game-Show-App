@@ -14,7 +14,7 @@ const phrases = ['I am a meat-popsicle.',
                  'There is no spoon.',
                  'Why so serious?',
                  'Witness me!'];
-let phraseArray = getRandomPhraseArray(phrases);
+let phraseArray;
 
 // FUNCTIONS
 
@@ -81,6 +81,7 @@ startGame[0].addEventListener('click', () => {
   console.log('The Start Game button has been clicked.');
   const overlay = document.getElementById('overlay');
   overlay.style.display = 'none';
+  phraseArray = getRandomPhraseArray(phrases);
   missed = 0;
   let tries = document.getElementsByClassName('tries');
   for (i=0; i < tries.length ; i++) {
