@@ -85,7 +85,7 @@ startGame[0].addEventListener('click', () => {
   }
   let chosen = document.getElementsByClassName('chosen');
   while (chosen[0]) {
-    chosen[0].removeAttribute("type");
+    chosen[0].removeAttribute("disabled");
     chosen[0].classList.remove('chosen');
   }
   addPhraseToDisplay();
@@ -95,7 +95,7 @@ qwerty.addEventListener('click', ()=> {
   let target = event.target;
   if (target.nodeName.toLowerCase() === 'button') {
     target.className = 'chosen';
-    target.setAttribute('type', 'disabled');
+    target.setAttribute('disabled', true);
     let pressedLetter =  target.textContent;
     let letterFound = checkLetter(pressedLetter);
     let tries = document.getElementsByClassName('tries');
